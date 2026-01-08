@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   avatar: String,
   channels: [{ type: mongoose.Schema.Types.ObjectId, ref: "Channel" }],
+  subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Channel" }],
+  likedVideos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
+  dislikedVideos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 
 export default mongoose.model("User", userSchema);

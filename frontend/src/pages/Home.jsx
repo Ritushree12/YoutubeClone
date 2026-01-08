@@ -9,7 +9,6 @@ const Home = () => {
   const [category, setCategory] = useState("All");
 
   useEffect(() => {
-    // Fetch videos based on search and category
     api
       .get(
         `/videos?search=${search}&category=${
@@ -21,19 +20,20 @@ const Home = () => {
   }, [search, category]);
 
   return (
-    <div>
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search videos..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <div className="container">
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search videos..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
-      {/* Category Filters */}
-      <Filters setCategory={setCategory} />
+      <div className="filters">
+        <Filters setCategory={setCategory} />
+      </div>
 
-      {/* Video Grid */}
       <div className="video-grid">
         {videos.map((v) => (
           <VideoCard key={v._id} video={v} />

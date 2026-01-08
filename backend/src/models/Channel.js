@@ -5,8 +5,9 @@ const channelSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   description: String,
   channelBanner: String,
-  subscribers: { type: Number, default: 0 },
+  subscribers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
+  isVerified: { type: Boolean, default: false },
 });
 
 export default mongoose.model("Channel", channelSchema);

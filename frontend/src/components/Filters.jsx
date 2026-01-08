@@ -11,7 +11,7 @@ const categories = [
 const Filters = ({ setCategory }) => (
   <div>
     {categories.map((cat) => (
-      <button key={cat} onClick={() => setCategory(cat)}>
+      <button key={cat} className="filter-btn" onClick={() => setCategory(cat)}>
         {cat}
       </button>
     ))}

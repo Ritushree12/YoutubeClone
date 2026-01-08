@@ -20,3 +20,20 @@ export const deleteComment = async (req, res) => {
   await comment.remove();
   res.json({ message: "Deleted" });
 };
+
+export const likeComment = async (req, res) => {
+  const comment = await Comment.findById(req.params.id);
+  if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+  const userId = req.user.id;
+  const isLiked = comment.likes.includes(userId);
+
+  if (isLiked) {
+    comment.likes.pull(userId);
+  } else {
+    comment.likes.push(userId);
+  }
+
+  await comment.save();
+  res.json({ likes: comment.likes.length });
+};
