@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import homeIcon from "../assets/home.png";
+import trendingIcon from "../assets/trending.png";
+import subscribeIcon from "../assets/subscribe.png";
+import uploadIcon from "../assets/upload _video.png";
+import libraryIcon from "../assets/playlist.png";
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
@@ -11,13 +16,13 @@ const Sidebar = () => {
         <ul>
           <li>
             <Link to="/">
-              <span className="icon">🏠</span>
+              <img src={homeIcon} alt="Home" className="icon" />
               Home
             </Link>
           </li>
           <li>
             <Link to="/trending">
-              <span className="icon">🔥</span>
+              <img src={trendingIcon} alt="Trending" className="icon" />
               Trending
             </Link>
           </li>
@@ -25,13 +30,17 @@ const Sidebar = () => {
             <>
               <li>
                 <Link to="/subscriptions">
-                  <span className="icon">📺</span>
+                  <img
+                    src={subscribeIcon}
+                    alt="Subscriptions"
+                    className="icon"
+                  />
                   Subscriptions
                 </Link>
               </li>
               <li>
                 <Link to="/upload">
-                  <span className="icon">⬆️</span>
+                  <img src={uploadIcon} alt="Upload" className="icon" />
                   Upload
                 </Link>
               </li>
@@ -39,7 +48,7 @@ const Sidebar = () => {
           )}
           <li>
             <Link to="/library">
-              <span className="icon">📚</span>
+              <img src={libraryIcon} alt="Library" className="icon" />
               Library
             </Link>
           </li>

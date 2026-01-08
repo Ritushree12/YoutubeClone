@@ -107,6 +107,12 @@
   background-color: #f2f2f2;
 }
 
+/* ===== Icons ===== */
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
 /* ===== Main Content ===== */
 .main-content {
   flex: 1;

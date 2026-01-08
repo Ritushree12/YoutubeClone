@@ -2,6 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
+import likeIcon from "../assets/like.png";
+import dislikeIcon from "../assets/dislike.png";
 
 const VideoPlayer = () => {
   const { id } = useParams();
@@ -103,10 +105,11 @@ const VideoPlayer = () => {
       <div className="video-info">
         <div className="video-actions">
           <button onClick={handleLike} disabled={!user}>
-            👍 Like ({likes})
+            <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
           </button>
           <button onClick={handleDislike} disabled={!user}>
-            👎 Dislike ({dislikes})
+            <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike (
+            {dislikes})
           </button>
         </div>
 
