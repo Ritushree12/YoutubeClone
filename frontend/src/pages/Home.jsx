@@ -6,13 +6,13 @@ import Filters from "../components/Filters";
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState("Home");
 
   useEffect(() => {
     api
       .get(
         `/videos?search=${search}&category=${
-          category === "All" ? "" : category
+          category === "Home" ? "" : category
         }`
       )
       .then((res) => setVideos(res.data))

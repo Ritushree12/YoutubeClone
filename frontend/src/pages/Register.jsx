@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api"; // Axios instance
-import "../../styles/Register.css"; // Optional CSS for styling
+import "../App.css"; // Main CSS for styling
 
 const Register = () => {
   const navigate = useNavigate();
