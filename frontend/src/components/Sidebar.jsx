@@ -7,11 +7,11 @@ import subscribeIcon from "../assets/subscribe.png";
 import uploadIcon from "../assets/upload _video.png";
 import libraryIcon from "../assets/playlist.png";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen }) => {
   const { user } = useContext(AuthContext);
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       <nav>
         <ul>
           <li>

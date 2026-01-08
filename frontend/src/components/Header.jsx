@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import hamburgerIcon from "../assets/hamburger.png";
 
-const Header = () => {
+const Header = ({ toggleSidebar }) => {
   const { user, logout } = useContext(AuthContext);
 
   return (
     <header className="header">
-      <div>
+      <div className="header-left">
+        <img
+          src={hamburgerIcon}
+          alt="Menu"
+          className="hamburger"
+          onClick={toggleSidebar}
+        />
         <Link
           to="/"
           style={{
@@ -19,7 +26,7 @@ const Header = () => {
           YouTube Clone
         </Link>
       </div>
-      <nav>
+      <div className="header-right">
         {user ? (
           <>
             <Link to="/upload">Upload</Link>
@@ -31,7 +38,7 @@ const Header = () => {
             <Link to="/register">Register</Link>
           </>
         )}
-      </nav>
+      </div>
     </header>
   );
 };

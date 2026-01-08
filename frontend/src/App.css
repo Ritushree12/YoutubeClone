@@ -27,8 +27,9 @@
   gap: 16px;
 }
 
-.header-left img {
-  height: 20px;
+.hamburger {
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 }
 
@@ -85,6 +86,16 @@
   background-color: #ffffff;
   border-right: 1px solid #e5e5e5;
   padding-top: 12px;
+  display: none;
+}
+
+.sidebar.open {
+  display: block;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  height: calc(100vh - 56px);
+  z-index: 999;
 }
 
 .sidebar nav ul {
@@ -245,6 +256,16 @@
 @media (max-width: 768px) {
   .sidebar {
     display: none;
+  }
+
+  .sidebar.open {
+    display: block;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 240px;
+    height: calc(100vh - 56px);
+    z-index: 999;
   }
 
   .header-center {

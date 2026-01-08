@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
@@ -8,11 +9,17 @@ import VideoPlayer from "./pages/VideoPlayer";
 import Upload from "./pages/Upload";
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <BrowserRouter>
       <div className="app">
-        <Header />
-        <Sidebar />
+        <Header toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={sidebarOpen} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
