@@ -4,7 +4,11 @@
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
-  font-family: Roboto, Arial, sans-serif;
+  font-family: "Roboto", "Arial", "sans-serif";
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 
 /* ===== Header ===== */
@@ -171,7 +175,7 @@ textarea {
 .main-content {
   flex: 1;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
 }
 
 /* ===== Filters ===== */
@@ -183,10 +187,11 @@ textarea {
 }
 
 .filter-btn {
-  background-color: #f2f2f2;
+  background-color: #e5e5e5;
+  color: black;
   border: none;
   padding: 8px 14px;
-  border-radius: 16px;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
   white-space: nowrap;
