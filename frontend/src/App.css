@@ -312,10 +312,6 @@ textarea {
     z-index: 999;
   }
 
-  .header-center {
-    display: none;
-  }
-
   .video-grid {
     grid-template-columns: 1fr;
   }

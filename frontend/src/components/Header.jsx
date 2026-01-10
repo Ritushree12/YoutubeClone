@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import hamburgerIcon from "../assets/hamburger.png";
@@ -7,11 +7,15 @@ import searchIcon from "../assets/search.png";
 const Header = ({ toggleSidebar }) => {
   const { user, logout } = useContext(AuthContext);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // You can implement search functionality here
-    console.log("Searching for:", searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery)}`);
+    } else {
+      navigate("/");
+    }
   };
 
   return (

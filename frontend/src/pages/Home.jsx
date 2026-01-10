@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import api from "../services/api";
 import VideoCard from "../components/VideoCard";
 import Filters from "../components/Filters";
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
-  const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Home");
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
 
   useEffect(() => {
     api
@@ -21,15 +23,6 @@ const Home = () => {
 
   return (
     <div className="container">
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search videos..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
       <div className="filters">
         <Filters setCategory={setCategory} />
       </div>
