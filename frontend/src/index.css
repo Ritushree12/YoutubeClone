@@ -38,18 +38,19 @@ a:hover {
 }
 
 button {
-  background-color: var(--accent-color);
+  background-color: transparent;
   color: var(--text-color);
-  border: none;
+  border: 1px solid var(--border-color);
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 button:hover {
-  background-color: #cc0000;
+  background-color: #f2f2f2;
+  border-color: #ccc;
 }
 
 input,

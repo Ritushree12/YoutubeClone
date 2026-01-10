@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import hamburgerIcon from "../assets/hamburger.png";
 
 const Header = ({ toggleSidebar }) => {
   const { user, logout } = useContext(AuthContext);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // You can implement search functionality here
+    console.log("Searching for:", searchQuery);
+  };
 
   return (
     <header className="header">
@@ -25,6 +32,17 @@ const Header = ({ toggleSidebar }) => {
         >
           YouTube Clone
         </Link>
+      </div>
+      <div className="header-center">
+        <form className="search-bar" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit">🔍</button>
+        </form>
       </div>
       <div className="header-right">
         {user ? (
