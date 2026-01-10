@@ -52,6 +52,8 @@ const Upload = () => {
               }
               required
             />
+            <br />
+            <br />
           </div>
           <div className="form-group">
             <textarea
@@ -61,7 +63,8 @@ const Upload = () => {
                 setFormData({ ...formData, description: e.target.value })
               }
             />
-          </div>
+          </div>{" "}
+          <br />
           <div className="form-group">
             <input
               type="text"
@@ -71,7 +74,8 @@ const Upload = () => {
                 setFormData({ ...formData, category: e.target.value })
               }
             />
-          </div>
+          </div>{" "}
+          <br />
           <div className="form-group">
             <input
               type="text"
@@ -81,7 +85,8 @@ const Upload = () => {
                 setFormData({ ...formData, tags: e.target.value })
               }
             />
-          </div>
+          </div>{" "}
+          <br />
           <div className="form-group">
             <input
               type="file"
@@ -89,8 +94,11 @@ const Upload = () => {
               onChange={(e) => setFile(e.target.files[0])}
               required
             />
-          </div>
-          <button type="submit">Upload</button>
+          </div>{" "}
+          <br />
+          <button type="submit" className="uploadButton">
+            Upload
+          </button>
         </form>
       </div>
     </div>

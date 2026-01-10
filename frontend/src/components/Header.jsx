@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import hamburgerIcon from "../assets/hamburger.png";
+import searchIcon from "../assets/search.png";
 
 const Header = ({ toggleSidebar }) => {
   const { user, logout } = useContext(AuthContext);
@@ -41,7 +42,9 @@ const Header = ({ toggleSidebar }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button type="submit">🔍</button>
+          <button type="submit">
+            <img src={searchIcon} alt="Search" />
+          </button>
         </form>
       </div>
       <div className="header-right">
