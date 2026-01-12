@@ -30,7 +30,9 @@ export const createVideo = async (req, res) => {
 export const uploadVideo = async (req, res) => {
   const { title, description, category, tags } = req.body;
   const videoFile = req.files.find((f) => f.fieldname === "video");
-  const videoUrl = videoFile ? `/uploads/${videoFile.filename}` : "";
+  const videoUrl = videoFile
+    ? `${process.env.BASE_URL}/uploads/${videoFile.filename}`
+    : "";
   const thumbnailUrl = "https://via.placeholder.com/300x180?text=No+Thumbnail"; // Placeholder thumbnail
 
   const video = await Video.create({
