@@ -19,7 +19,19 @@ const VideoPlayer = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [suggestedVideos, setSuggestedVideos] = useState([]);
   const [editingId, setEditingId] = useState(null);
-const [editingText, setEditingText] = useState("");
+  const [editingText, setEditingText] = useState("");
+  const [menuOpenId, setMenuOpenId] = useState(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.comment-menu-container')) {
+        setMenuOpenId(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     api.get(`/videos/${id}`).then((res) => {
@@ -155,26 +167,61 @@ const handleDeleteComment = async (commentId) => {
   )}
 
   {comments.map((c) => (
-    <div key={c._id} className="comment">
-      <strong>{c.user.username}:</strong>
-      {editingId === c._id ? (
-        <>
-          <input
-            value={editingText}
-            onChange={(e) => setEditingText(e.target.value)}
-          />
-          <button onClick={() => handleUpdateComment(c._id)}>Save</button>
-          <button onClick={() => setEditingId(null)}>Cancel</button>
-        </>
-      ) : (
-        <span> {c.text}</span>
-      )}
-      {user && c.user.username === user.username && editingId !== c._id && (
-        <>
-          <button onClick={() => { setEditingId(c._id); setEditingText(c.text); }}>Edit</button>
-          <button onClick={() => handleDeleteComment(c._id)}>Delete</button>
-        </>
-      )}
+    <div key={c._id} className="comment-item">
+      <div className="comment-header">
+        <div className="comment-content">
+          <strong>{c.user.username}:</strong>
+          {editingId === c._id ? (
+            <div className="comment-edit">
+              <input
+                value={editingText}
+                onChange={(e) => setEditingText(e.target.value)}
+                className="comment-edit-input"
+              />
+              <button onClick={() => handleUpdateComment(c._id)} className="comment-save-btn">Save</button>
+              <button onClick={() => setEditingId(null)} className="comment-cancel-btn">Cancel</button>
+            </div>
+          ) : (
+            <span className="comment-text"> {c.text}</span>
+          )}
+        </div>
+        {user && c.user.username === user.username && editingId !== c._id && (
+          <div className="comment-menu-container">
+            <button
+              className="comment-menu-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpenId(menuOpenId === c._id ? null : c._id);
+              }}
+            >
+              ⋮
+            </button>
+            {menuOpenId === c._id && (
+              <div className="comment-menu">
+                <button
+                  className="comment-menu-item"
+                  onClick={() => {
+                    setEditingId(c._id);
+                    setEditingText(c.text);
+                    setMenuOpenId(null);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="comment-menu-item comment-delete-btn"
+                  onClick={() => {
+                    handleDeleteComment(c._id);
+                    setMenuOpenId(null);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   ))}
 </div>
