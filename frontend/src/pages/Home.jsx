@@ -6,7 +6,7 @@ import Filters from "../components/Filters";
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
-  const [category, setCategory] = useState("Home");
+  const [category, setCategory] = useState("all"); // lowercase for DB match
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
 
@@ -14,7 +14,7 @@ const Home = () => {
     api
       .get(
         `/videos?search=${search}&category=${
-          category === "Home" ? "" : category
+          category.toLowerCase() === "all" ? "" : category
         }`
       )
       .then((res) => setVideos(res.data))
@@ -23,21 +23,25 @@ const Home = () => {
 
   return (
     <div className="container">
+      {/* Filters */}
       <div className="filters">
         <Filters setCategory={setCategory} />
       </div>
 
-     <div className="video-grid" style={{
-  display: "flex",
-  flexWrap: "wrap",
-  gap: "16px",
-  justifyContent: "center"
-}}>
-  {videos.map((v) => (
-    <VideoCard key={v._id} video={v} />
-  ))}
-</div>
-
+      {/* Video Grid */}
+      <div
+        className="video-grid"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "16px",
+          justifyContent: "center",
+        }}
+      >
+        {videos.map((v) => (
+          <VideoCard key={v._id} video={v} />
+        ))}
+      </div>
     </div>
   );
 };

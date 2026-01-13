@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import "./VideoCard.css"; // import the CSS file
 
 const VideoCard = ({ video }) => {
   const navigate = useNavigate();
