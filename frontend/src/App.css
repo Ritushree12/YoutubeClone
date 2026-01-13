@@ -280,6 +280,67 @@ textarea {
     margin-left: 240px;
   }
 }
+/* ===== Video Player ===== */
+.video-player-container {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.video-main {
+  flex: 1;
+  min-width: 300px;
+  max-width: 720px; /* Limit the width */
+}
+
+.video-player {
+  width: 100%;   /* responsive width */
+  height: 405px; /* 16:9 aspect ratio, 720x405 */
+  max-height: 480px; /* optional maximum height */
+  border-radius: 8px;
+  background-color: #000;
+}
+
+.video-info {
+  margin-top: 12px;
+}
+
+.video-actions button {
+  margin-right: 10px;
+}
+
+.channel-info {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.channel-info h3 {
+  margin: 0;
+}
+.suggested-videos {
+  flex: 0 0 300px; /* fixed sidebar width */
+}
+
+.suggested-video-card {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.suggested-video-card img {
+  width: 120px;
+  height: 67px; /* 16:9 ratio */
+  object-fit: cover;
+  border-radius: 4px;
+}
+.suggested-video-info h4,p {
+  font-size: 14px;
+  margin: 0 0 4px 0;
+  color: #030303;
+}
 
 /* ===== Filters ===== */
 .filters {

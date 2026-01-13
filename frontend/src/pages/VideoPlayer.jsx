@@ -18,6 +18,8 @@ const VideoPlayer = () => {
   const [subscribers, setSubscribers] = useState(0);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [suggestedVideos, setSuggestedVideos] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+const [editingText, setEditingText] = useState("");
 
   useEffect(() => {
     api.get(`/videos/${id}`).then((res) => {
@@ -89,25 +91,36 @@ const VideoPlayer = () => {
     setSubscribers(res.data.subscribers);
     setIsSubscribed(!isSubscribed);
   };
+const handleAddComment = async () => {
+  if (!newComment) return;
+  const res = await api.post("/comments", { videoId: id, text: newComment }, {
+    headers: { Authorization: `Bearer ${user.token}` },
+  });
+  setComments([...comments, res.data]);
+  setNewComment("");
+};
 
-  const handleAddComment = async () => {
-    if (!newComment) return;
-    const res = await api.post(
-      "/comments",
-      { videoId: id, text: newComment },
-      {
-        headers: { Authorization: `Bearer ${user.token}` },
-      }
-    );
-    setComments([...comments, res.data]);
-    setNewComment("");
-  };
+const handleUpdateComment = async (commentId) => {
+  const res = await api.put(`/comments/${commentId}`, { text: editingText }, {
+    headers: { Authorization: `Bearer ${user.token}` },
+  });
+  setComments(comments.map(c => c._id === commentId ? { ...c, text: res.data.text } : c));
+  setEditingId(null);
+  setEditingText("");
+};
+
+const handleDeleteComment = async (commentId) => {
+  await api.delete(`/comments/${commentId}`, {
+    headers: { Authorization: `Bearer ${user.token}` },
+  });
+  setComments(comments.filter(c => c._id !== commentId));
+};
 
   return video ? (
     <div className="video-player-container">
       <div className="video-main">
         <h2>{video.title}</h2>
-        <video src={video.videoUrl} controls />
+      <video className="video-player" src={video.videoUrl} controls />
 
         <div className="video-info">
           <div className="video-actions">
@@ -127,24 +140,45 @@ const VideoPlayer = () => {
           </div>
         </div>
 
-        <div className="comments-section">
-          <h3>Comments</h3>
-          {user && (
-            <div className="comment-form">
-              <input
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add comment..."
-              />
-              <button onClick={handleAddComment}>Add</button>
-            </div>
-          )}
-          {comments.map((c) => (
-            <div key={c._id} className="comment">
-              <strong>{c.user.username}:</strong> {c.text}
-            </div>
-          ))}
-        </div>
+     <div className="comments-section">
+  <h3>Comments</h3>
+
+  {user && (
+    <div className="comment-form">
+      <input
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+        placeholder="Add comment..."
+      />
+      <button onClick={handleAddComment}>Add</button>
+    </div>
+  )}
+
+  {comments.map((c) => (
+    <div key={c._id} className="comment">
+      <strong>{c.user.username}:</strong>
+      {editingId === c._id ? (
+        <>
+          <input
+            value={editingText}
+            onChange={(e) => setEditingText(e.target.value)}
+          />
+          <button onClick={() => handleUpdateComment(c._id)}>Save</button>
+          <button onClick={() => setEditingId(null)}>Cancel</button>
+        </>
+      ) : (
+        <span> {c.text}</span>
+      )}
+      {user && c.user.username === user.username && editingId !== c._id && (
+        <>
+          <button onClick={() => { setEditingId(c._id); setEditingText(c.text); }}>Edit</button>
+          <button onClick={() => handleDeleteComment(c._id)}>Delete</button>
+        </>
+      )}
+    </div>
+  ))}
+</div>
+
       </div>
 
       <div className="suggested-videos">
