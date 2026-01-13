@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VideoPlayer from "./pages/VideoPlayer";
 import Upload from "./pages/Upload";
+import ChannelPage from "./pages/Channel";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -27,6 +28,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/video/:id" element={<VideoPlayer />} />
             <Route path="/upload" element={<Upload />} />
+            <Route path="/channel/:id" element={<ChannelPage />} />
           </Routes>
         </main>
       </div>
