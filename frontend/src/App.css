@@ -316,28 +316,53 @@ textarea {
 /* ===== Video Card ===== */
 .video-card {
   cursor: pointer;
+  width: 360px;               /* increased width for modern look */
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;      /* white background */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  transition: transform 0.2s ease;
 }
 
-.video-card img {
+.video-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Thumbnail */
+.video-thumbnail {
   width: 100%;
-  border-radius: 12px;
+  height: 200px;               /* slightly taller */
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
+/* Video Info */
 .video-info {
-  padding: 10px 0;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;      /* keep background white */
 }
 
+/* Title */
 .video-title {
-  font-size: 14px;
+  font-size: 16px;            /* bigger font */
   font-weight: 500;
-  color: #030303;
-  margin-bottom: 4px;
+  color: #000;                /* black text */
+  margin-bottom: 6px;
+  line-height: 1.2;
 }
 
+/* Description / meta */
 .video-meta {
-  font-size: 12px;
-  color: #606060;
+  font-size: 14px;
+  color: #333;                /* dark grey for description */
+  line-height: 1.4;
 }
+
 
 /* ===== Video Player ===== */
 .video-player-container {
@@ -441,6 +466,11 @@ textarea {
 .video-card img:hover {
   transform: scale(1.05);
   transition: transform 0.2s ease-in-out;
+}
+.video-card h3 {
+  color: #333;
+  padding: 10px;
+  transition: color 0.2s ease-in-out;
 }
 
 .video-card h3:hover {
