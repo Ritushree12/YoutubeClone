@@ -178,6 +178,12 @@ textarea {
   background-color: #ffffff;
 }
 
+@media (min-width: 769px) {
+  body.sidebar-open .main-content {
+    margin-left: 240px;
+  }
+}
+
 /* ===== Filters ===== */
 .filters {
   display: flex;

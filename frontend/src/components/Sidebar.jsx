@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import homeIcon from "../assets/home.png";
 import trendingIcon from "../assets/trending.png";
@@ -10,8 +10,17 @@ import libraryIcon from "../assets/playlist.png";
 const Sidebar = ({ isOpen }) => {
   const { user } = useContext(AuthContext);
 
+  // Toggle a class on <body> so sibling content (filters, main, etc.) can react and not be overlapped.
+  useEffect(() => {
+    const className = "sidebar-open";
+    const root = document.body;
+    if (isOpen) root.classList.add(className);
+    else root.classList.remove(className);
+    return () => root.classList.remove(className);
+  }, [isOpen]);
+
   return (
-    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+    <aside className={`sidebar ${isOpen ? "open" : ""}`} aria-expanded={isOpen}>
       <nav>
         <ul>
           <li>
