@@ -1,18 +1,11 @@
-import { Link } from "react-router-dom";
+import ReactPlayer from "react-player";
 
 const VideoCard = ({ video }) => (
-  <Link to={`/video/${video._id}`} className="video-card">
-    <img
-      src={
-        video.thumbnailUrl ||
-        "https://via.placeholder.com/300x180?text=No+Thumbnail"
-      }
-      alt={video.title}
-    />
-    <h4>{video.title}</h4>
-    <p>{video.channel?.channelName}</p>
-    <p>{video.views} views</p>
-  </Link>
+  <div className="video-card">
+    <ReactPlayer url={video.videoUrl} controls width="100%" />
+    <h3>{video.title}</h3>
+  </div>
 );
+
 
 export default VideoCard;
