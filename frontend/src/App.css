@@ -79,7 +79,7 @@
 
 /* YouTube-style header buttons */
 .header-right button {
-  background: #f1f1f1;
+  background: #ffffff;
   color: #0f0f0f;
   border: none;
   border-radius: 6px;          /* subtle, not round */
@@ -163,7 +163,26 @@ textarea {
   color: #030303;
   font-size: 14px;
 }
-
+.login-submit{
+  background-color: #ff0000;
+  color: white;
+  border: 1px solid #ff0000;
+  padding: 10px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+  align-self: center;
+}
+.login-submit:hover{
+  background-color: #cc0000;
+  border-color: #cc0000;
+}
+.login-submit-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
 /* ===== User Menu ===== */
 .user-menu {
   position: absolute;
@@ -413,6 +432,11 @@ textarea {
   padding: 20px;
   border-radius: 8px;
   background-color: #f9f9f9;
+  color: #030303;
+}
+.register-form-group {
+  margin-bottom: 15px;
+  font-size: 15px;
 }
 
 .register-form .form-group {

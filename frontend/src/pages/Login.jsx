@@ -36,7 +36,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-          </div>
+          </div><br/>
           <div className="form-group">
             <input
               type="password"
@@ -45,8 +45,9 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </div>
-          <button type="submit">Login</button>
+          </div><br/>
+          <div className="login-submit-container"><button type="submit" className="login-submit">Login</button>
+</div>
         </form>
       </div>
     </div>

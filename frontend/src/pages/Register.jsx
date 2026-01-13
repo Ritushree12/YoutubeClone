@@ -55,9 +55,9 @@ const Register = () => {
     <div className="register-container">
       <h2>Create Account</h2>
       {error && <p className="error">{error}</p>}
-
+      <br />
       <form onSubmit={handleSubmit} className="register-form">
-        <div className="form-group">
+        <div className="form-group register-form-group">
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -69,7 +69,7 @@ const Register = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="form-group register-form-group">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -81,7 +81,7 @@ const Register = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="form-group register-form-group">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -97,6 +97,7 @@ const Register = () => {
           {loading ? "Registering..." : "Register"}
         </button>
       </form>
+      <br/>
 
       <p className="login-link">
         Already have an account?{" "}

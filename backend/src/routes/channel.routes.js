@@ -34,3 +34,4 @@ router.post("/:id/subscribe", protect, async (req, res) => {
 });
 
 export default router;
+
