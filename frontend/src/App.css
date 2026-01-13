@@ -434,6 +434,19 @@ textarea {
   margin-bottom: 16px;
   font-size: 16px;
 }
+.video-card img:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+.video-card img:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+.video-card h3:hover {
+  color: #ff0000; /* optional: hover effect like YouTube */
+}
+
 
 .suggested-video-card {
   display: flex;

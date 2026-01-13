@@ -27,11 +27,17 @@ const Home = () => {
         <Filters setCategory={setCategory} />
       </div>
 
-      <div className="video-grid">
-        {videos.map((v) => (
-          <VideoCard key={v._id} video={v} />
-        ))}
-      </div>
+     <div className="video-grid" style={{
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "16px",
+  justifyContent: "center"
+}}>
+  {videos.map((v) => (
+    <VideoCard key={v._id} video={v} />
+  ))}
+</div>
+
     </div>
   );
 };
