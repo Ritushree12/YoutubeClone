@@ -5,7 +5,7 @@ const videoSchema = new mongoose.Schema(
     title: String,
     description: String,
     thumbnailUrl: String,
-    videoUrl: String,
+    videoUrl: { type: String, required: true },
     category: String,
     channel: { type: mongoose.Schema.Types.ObjectId, ref: "Channel" },
     uploader: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
