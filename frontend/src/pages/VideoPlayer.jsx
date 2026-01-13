@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 import likeIcon from "../assets/like.png";
@@ -17,6 +17,7 @@ const VideoPlayer = () => {
   const [isDisliked, setIsDisliked] = useState(false);
   const [subscribers, setSubscribers] = useState(0);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [suggestedVideos, setSuggestedVideos] = useState([]);
 
   useEffect(() => {
     api.get(`/videos/${id}`).then((res) => {
@@ -40,6 +41,11 @@ const VideoPlayer = () => {
           );
         }
       }
+    });
+
+    // Fetch suggested videos
+    api.get('/videos').then((res) => {
+      setSuggestedVideos(res.data.filter(v => v._id !== id).slice(0, 10));
     });
   }, [id, user]);
 
@@ -98,45 +104,61 @@ const VideoPlayer = () => {
   };
 
   return video ? (
-    <div className="container video-player">
-      <h2>{video.title}</h2>
-      <video src={video.videoUrl} controls />
+    <div className="video-player-container">
+      <div className="video-main">
+        <h2>{video.title}</h2>
+        <video src={video.videoUrl} controls />
 
-      <div className="video-info">
-        <div className="video-actions">
-          <button onClick={handleLike} disabled={!user}>
-            <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
-          </button>
-          <button onClick={handleDislike} disabled={!user}>
-            <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike (
-            {dislikes})
-          </button>
+        <div className="video-info">
+          <div className="video-actions">
+            <button onClick={handleLike} disabled={!user}>
+              <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
+            </button>
+            <button onClick={handleDislike} disabled={!user}>
+              <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike ({dislikes})
+            </button>
+          </div>
+
+          <div className="channel-info">
+            <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
+            <button onClick={handleSubscribe} disabled={!user}>
+              {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
+            </button>
+          </div>
         </div>
 
-        <div>
-          <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
-          <button onClick={handleSubscribe} disabled={!user}>
-            {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
-          </button>
+        <div className="comments-section">
+          <h3>Comments</h3>
+          {user && (
+            <div className="comment-form">
+              <input
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add comment..."
+              />
+              <button onClick={handleAddComment}>Add</button>
+            </div>
+          )}
+          {comments.map((c) => (
+            <div key={c._id} className="comment">
+              <strong>{c.user.username}:</strong> {c.text}
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="comments-section">
-        <h3>Comments</h3>
-        {user && (
-          <div className="comment-form">
-            <input
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Add comment..."
-            />
-            <button onClick={handleAddComment}>Add</button>
-          </div>
-        )}
-        {comments.map((c) => (
-          <div key={c._id} className="comment">
-            <strong>{c.user.username}:</strong> {c.text}
-          </div>
+      <div className="suggested-videos">
+        <h3>Suggested Videos</h3>
+        {suggestedVideos.map((v) => (
+          <Link key={v._id} to={`/video/${v._id}`} className="suggested-video-link">
+            <div className="suggested-video-card">
+              <img src={v.thumbnailUrl} alt={v.title} />
+              <div className="suggested-video-info">
+                <h4>{v.title}</h4>
+                <p>{v.channel?.channelName}</p>
+              </div>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
