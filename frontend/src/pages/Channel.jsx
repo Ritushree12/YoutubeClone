@@ -7,7 +7,15 @@ import VideoCard from "../components/VideoCard";
 const Channel = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
-  const [channel, setChannel] = useState(null);
+  const { userId } = useParams();
+const [channel,setChannel] = useState({});
+const [videos,setVideos] = useState([]);
+
+useEffect(()=>{
+  axios.get(`/api/channel/${userId}`).then(r=>setChannel(r.data));
+  axios.get(`/api/channel/videos/${userId}`).then(r=>setVideos(r.data));
+},[]);
+
 
   useEffect(() => {
     api.get(`/channels/${id}`).then((res) => setChannel(res.data));
@@ -27,5 +35,24 @@ const Channel = () => {
     <p>Loading...</p>
   );
 };
+<Header/>
+<div className="layout">
+<Sidebar/>
+<div className="channel">
+  <h1>{channel.channelName}</h1>
+  <p>{channel.handle}</p>
+
+  <div className="video-grid">
+    {videos.map(v=>(
+      <VideoCard
+        key={v._id}
+        video={v}
+        channelName={channel.channelName}
+      />
+    ))}
+  </div>
+</div>
+</div>
+
 
 export default Channel;
