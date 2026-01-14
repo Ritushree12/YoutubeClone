@@ -27,12 +27,12 @@ const VideoPlayer = () => {
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.comment-menu-container')) {
+      if (!event.target.closest(".comment-menu-container")) {
         setMenuOpenId(null);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -60,8 +60,8 @@ const VideoPlayer = () => {
     });
 
     // Fetch suggested videos
-    api.get('/videos').then((res) => {
-      setSuggestedVideos(res.data.filter(v => v._id !== id).slice(0, 10));
+    api.get("/videos").then((res) => {
+      setSuggestedVideos(res.data.filter((v) => v._id !== id).slice(0, 10));
     });
   }, [id, user]);
 
@@ -105,173 +105,209 @@ const VideoPlayer = () => {
     setSubscribers(res.data.subscribers);
     setIsSubscribed(!isSubscribed);
   };
-const handleAddComment = async () => {
-  if (!newComment) return;
+  const handleAddComment = async () => {
+    if (!newComment) return;
 
-  const res = await api.post(
-    "/comments",
-    { videoId: id, text: newComment },
-    { headers: { Authorization: `Bearer ${user.token}` } }
-  );
+    const res = await api.post(
+      "/comments",
+      { videoId: id, text: newComment },
+      { headers: { Authorization: `Bearer ${user.token}` } }
+    );
 
-  // Ensure the comment has proper user data for immediate display
-  const newCommentWithUser = {
-    ...res.data,
-    user: {
-      _id: user._id,
-      username: user.username,
-      email: user.email
-    }
+    // Ensure the comment has proper user data for immediate display
+    const newCommentWithUser = {
+      ...res.data,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    };
+
+    setComments([...comments, newCommentWithUser]);
+    setNewComment("");
   };
 
-  setComments([...comments, newCommentWithUser]);
-  setNewComment("");
-};
+  const handleUpdateComment = async (commentId) => {
+    const res = await api.put(
+      `/comments/${commentId}`,
+      { text: editingText },
+      {
+        headers: { Authorization: `Bearer ${user.token}` },
+      }
+    );
 
+    // Ensure the updated comment maintains user data
+    const updatedComment = {
+      ...res.data,
+      user: comments.find((c) => c._id === commentId)?.user || {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    };
 
-const handleUpdateComment = async (commentId) => {
-  const res = await api.put(`/comments/${commentId}`, { text: editingText }, {
-    headers: { Authorization: `Bearer ${user.token}` },
-  });
-
-  // Ensure the updated comment maintains user data
-  const updatedComment = {
-    ...res.data,
-    user: comments.find(c => c._id === commentId)?.user || {
-      _id: user._id,
-      username: user.username,
-      email: user.email
-    }
+    setComments(
+      comments.map((c) => (c._id === commentId ? updatedComment : c))
+    );
+    setEditingId(null);
+    setEditingText("");
   };
 
-  setComments(comments.map(c => c._id === commentId ? updatedComment : c));
-  setEditingId(null);
-  setEditingText("");
-};
-
-const handleDeleteComment = async (commentId) => {
-  await api.delete(`/comments/${commentId}`, {
-    headers: { Authorization: `Bearer ${user.token}` },
-  });
-  setComments(comments.filter(c => c._id !== commentId));
-};
+  const handleDeleteComment = async (commentId) => {
+    await api.delete(`/comments/${commentId}`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    setComments(comments.filter((c) => c._id !== commentId));
+  };
 
   return video ? (
     <div className="video-player-container">
       <div className="video-main">
-        <h2>{video.title}</h2>
-      <video className="video-player" src={video.videoUrl} controls />
-
-<div className="video-info">
-  <div className="video-actions-row">
-    <button className="action-btn like-btn" onClick={handleLike} disabled={!user}>
-      <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
-    </button>
-    <button className="action-btn dislike-btn" onClick={handleDislike} disabled={!user}>
-      <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike ({dislikes})
-    </button>
-    <button className="action-btn share-btn">
-      <img src={share} alt="Share" className="icon" /> Share
-    </button>
-    <button className="action-btn save-btn">
-      <img src={save} alt="Save" className="icon" /> Save
-    </button>
-  </div>
-
-  <div className="channel-info">
-     <h3>{video.channelName || "Unknown Channel"}</h3>
-    <button className="subscribe-btn" onClick={handleSubscribe} disabled={!user}>
-      {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
-    </button>
-  </div>
-</div>
-
-
-     <div className="comments-section">
-  <h3>Comments</h3>
-
-  {user && (
-    <div className="comment-form">
-      <input
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-        placeholder="Add comment..."
-      />
-      <button onClick={handleAddComment}>Add</button>
-    </div>
-  )}
-
-  {comments.map((c) => (
-    <div key={c._id} className="comment-item">
-      <div className="comment-header">
-        <div className="comment-content">
-          <strong>{c.user.username}:</strong>
-          {editingId === c._id ? (
-            <div className="comment-edit">
-              <input
-                value={editingText}
-                onChange={(e) => setEditingText(e.target.value)}
-                className="comment-edit-input"
-              />
-              <button onClick={() => handleUpdateComment(c._id)} className="comment-save-btn">Save</button>
-              <button onClick={() => setEditingId(null)} className="comment-cancel-btn">Cancel</button>
-            </div>
-          ) : (
-            <span className="comment-text"> {c.text}</span>
-          )}
+        <h2 className="video-player-title">{video.title}</h2>
+        <p className="video-player-views">{video.views || 0} views</p>
+        <video className="video-player" src={video.videoUrl} controls />
+        <div className="channel-info">
+          <h3>{video.channelName || "Unknown Channel"}</h3>
+          <button
+            className="subscribe-btn"
+            onClick={handleSubscribe}
+            disabled={!user}
+          >
+            {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
+          </button>
         </div>
-        {user && c.user.username === user.username && editingId !== c._id && (
-          <div className="comment-menu-container">
+        <div className="video-info">
+          <div className="video-actions-row">
             <button
-              className="comment-menu-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setMenuOpenId(menuOpenId === c._id ? null : c._id);
-              }}
+              className="action-btn like-btn"
+              onClick={handleLike}
+              disabled={!user}
             >
-              ⋮
+              <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
             </button>
-            {menuOpenId === c._id && (
-              <div className="comment-menu">
-                <button
-                  className="comment-menu-item"
-                  onClick={() => {
-                    setEditingId(c._id);
-                    setEditingText(c.text);
-                    setMenuOpenId(null);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  className="comment-menu-item comment-delete-btn"
-                  onClick={() => {
-                    handleDeleteComment(c._id);
-                    setMenuOpenId(null);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+            <button
+              className="action-btn dislike-btn"
+              onClick={handleDislike}
+              disabled={!user}
+            >
+              <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike (
+              {dislikes})
+            </button>
+            <button className="action-btn share-btn">
+              <img src={share} alt="Share" className="icon" /> Share
+            </button>
+            <button className="action-btn save-btn">
+              <img src={save} alt="Save" className="icon" /> Save
+            </button>
           </div>
-        )}
-      </div>
-    </div>
-  ))}
-</div>
 
+          <p className="video-player-description">{video.description}</p>
+        </div>
+
+        <div className="comments-section">
+          <h3>Comments</h3>
+
+          {user && (
+            <div className="comment-form">
+              <input
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add comment..."
+              />
+              <button onClick={handleAddComment}>Add</button>
+            </div>
+          )}
+
+          {comments.map((c) => (
+            <div key={c._id} className="comment-item">
+              <div className="comment-header">
+                <div className="comment-content">
+                  <strong>{c.user.username}:</strong>
+                  {editingId === c._id ? (
+                    <div className="comment-edit">
+                      <input
+                        value={editingText}
+                        onChange={(e) => setEditingText(e.target.value)}
+                        className="comment-edit-input"
+                      />
+                      <button
+                        onClick={() => handleUpdateComment(c._id)}
+                        className="comment-save-btn"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="comment-cancel-btn"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="comment-text"> {c.text}</span>
+                  )}
+                </div>
+                {user &&
+                  c.user.username === user.username &&
+                  editingId !== c._id && (
+                    <div className="comment-menu-container">
+                      <button
+                        className="comment-menu-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMenuOpenId(menuOpenId === c._id ? null : c._id);
+                        }}
+                      >
+                        ⋮
+                      </button>
+                      {menuOpenId === c._id && (
+                        <div className="comment-menu">
+                          <button
+                            className="comment-menu-item"
+                            onClick={() => {
+                              setEditingId(c._id);
+                              setEditingText(c.text);
+                              setMenuOpenId(null);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="comment-menu-item comment-delete-btn"
+                            onClick={() => {
+                              handleDeleteComment(c._id);
+                              setMenuOpenId(null);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="suggested-videos">
         <h3>Suggested Videos</h3>
         {suggestedVideos.map((v) => (
-          <Link key={v._id} to={`/video/${v._id}`} className="suggested-video-link">
+          <Link
+            key={v._id}
+            to={`/video/${v._id}`}
+            className="suggested-video-link"
+          >
             <div className="suggested-video-card">
               <img src={v.thumbnailUrl} alt={v.title} />
               <div className="suggested-video-info">
-                <h4>{v.title}</h4>
-                <p>{v.channel?.channelName}</p>
+                <h4 className="suggested-video-title">{v.title}</h4>
+                <p className="suggested-video-channel">
+                  {v.channelName || "Unknown Channel"}
+                </p>
+                <p className="suggested-video-description">{v.description}</p>
               </div>
             </div>
           </Link>

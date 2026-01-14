@@ -82,7 +82,7 @@
   background: #ffffff;
   color: #0f0f0f;
   border: none;
-  border-radius: 6px;          /* subtle, not round */
+  border-radius: 6px; /* subtle, not round */
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 500;
@@ -110,7 +110,7 @@
 .dropdown {
   background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
 }
 
@@ -136,7 +136,7 @@
   color: #cc0000;
 }
 
-.form-container form{
+.form-container form {
   max-width: 400px;
   background-color: #ffffff;
   padding: 24px;
@@ -144,7 +144,6 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-
 }
 .form-container input,
 textarea {
@@ -172,7 +171,7 @@ textarea {
   color: #030303;
   font-size: 14px;
 }
-.login-submit{
+.login-submit {
   background-color: #ff0000;
   color: white;
   border: 1px solid #ff0000;
@@ -183,11 +182,11 @@ textarea {
   transition: all 0.3s;
   align-self: center;
 }
-.login-submit:hover{
+.login-submit:hover {
   background-color: #cc0000;
   border-color: #cc0000;
 }
-.login-submit-container{
+.login-submit-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -198,7 +197,7 @@ textarea {
   top: 55px;
   right: 0;
   background: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   width: 180px;
   z-index: 100;
@@ -305,15 +304,11 @@ textarea {
 }
 
 .video-player {
-  width: 100%;   /* responsive width */
+  width: 100%; /* responsive width */
   height: 405px; /* 16:9 aspect ratio, 720x405 */
   max-height: 480px; /* optional maximum height */
   border-radius: 8px;
   background-color: #000;
-}
-
-.video-info {
-  margin-top: 12px;
 }
 
 .video-actions button {
@@ -332,7 +327,12 @@ textarea {
   padding-right: 8px;
 }
 .suggested-videos {
+  color: #2f2f2f;
   flex: 0 0 300px; /* fixed sidebar width */
+  width: 30%;
+  position: right;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .suggested-video-card {
@@ -347,10 +347,44 @@ textarea {
   object-fit: cover;
   border-radius: 4px;
 }
-.suggested-video-info h4,p {
+.suggested-video-info h4,
+p {
+  width: 90%;
   font-size: 14px;
   margin: 0 0 4px 0;
   color: #030303;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Suggested Video Title Ellipsis */
+.suggested-video-title {
+  font-size: 14px;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.suggested-video-info {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggested-video-channel {
+  font-style: italic;
+  font-size: 12px;
+  color: #000000;
+  margin: 0;
+  text-align: left;
 }
 
 /* ===== Filters ===== */
@@ -388,11 +422,11 @@ textarea {
 /* ===== Video Card ===== */
 .video-card {
   cursor: pointer;
-  width: 360px;               /* increased width for modern look */
+  width: 360px; /* increased width for modern look */
   margin: 12px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;      /* white background */
+  background-color: #fff; /* white background */
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* subtle shadow */
   transition: transform 0.2s ease;
@@ -405,18 +439,10 @@ textarea {
 /* Thumbnail */
 .video-thumbnail {
   width: 100%;
-  height: 200px;               /* slightly taller */
+  height: 200px; /* slightly taller */
   object-fit: cover;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-}
-
-/* Video Info */
-.video-info {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
 /* Title */
@@ -427,9 +453,11 @@ textarea {
   margin: 0;
   line-height: 1.2;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for long titles */
+  text-align: left;
 }
 
 /* Channel Name */
@@ -438,6 +466,7 @@ textarea {
   color: #606060;
   margin: 0;
   font-weight: 400;
+  text-align: left;
 }
 
 /* Views */
@@ -446,8 +475,8 @@ textarea {
   color: #606060;
   margin: 0;
   font-weight: 400;
+  text-align: left;
 }
-
 
 /* ===== Video Player ===== */
 .video-player-container {
@@ -470,16 +499,19 @@ textarea {
 
 .video-info {
   display: flex;
+  flex-direction: column;
+  gap: 4px;
   justify-content: space-between;
-  align-items: center;
   padding: 10px 0;
   margin-top: 10px;
+  text-align: left; /* Left align all text */
 }
 
 .video-actions-row {
   display: flex;
   gap: 8px;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .action-btn {
@@ -577,7 +609,6 @@ textarea {
   color: #ff0000; /* optional: hover effect like YouTube */
 }
 
-
 .suggested-video-card {
   display: flex;
   gap: 10px;
@@ -593,20 +624,27 @@ textarea {
 }
 
 .suggested-video-info h4 {
+  width: 90%;
   font-size: 14px;
   margin: 0 0 4px 0;
   line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .suggested-video-info p {
+  width: 90%;
   font-size: 12px;
   color: #606060;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ===== Comments ===== */
 .comments-section {
   margin-top: 24px;
+  color: #2f2f2f;
 }
 
 .comment-item {
@@ -702,7 +740,7 @@ textarea {
   background: white;
   border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   min-width: 100px;
 }
@@ -860,7 +898,7 @@ textarea {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -900,7 +938,7 @@ textarea {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -909,17 +947,17 @@ textarea {
 .no-channel-page {
   padding: 40px;
 }
-.no-channel h2{
+.no-channel h2 {
   color: #807c7c;
 }
-.no-channel{
+.no-channel {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 20px;
 }
-.no-channel button{
+.no-channel button {
   background-color: #ff0000;
   color: white;
   border: 1px solid #ff0000;
@@ -929,12 +967,12 @@ textarea {
   font-size: 16px;
   transition: all 0.3s;
 }
-.no-channel button:hover{
+.no-channel button:hover {
   background-color: #cc0000;
   border-color: #cc0000;
 }
 
-.layout{
+.layout {
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -981,12 +1019,43 @@ textarea {
   cursor: not-allowed;
 }
 
-.channel-header{
+.channel-header {
   display: flex;
   align-items: center;
   gap: 20px;
   color: #2f2f2f;
   flex-direction: column;
   justify-content: center;
-  
+}
+
+/* Video Player Title, Views, Description */
+.video-player-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000;
+  margin: 0 0 8px 0;
+  text-align: left;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-player-views {
+  font-size: 14px;
+  color: #606060;
+  margin: 0 0 16px 0;
+  text-align: left;
+}
+
+.video-player-description {
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  line-height: 1.4;
+  width: 70%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

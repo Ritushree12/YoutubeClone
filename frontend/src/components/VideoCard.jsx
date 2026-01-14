@@ -8,6 +8,9 @@ const VideoCard = ({ video }) => {
     navigate(`/video/${video._id}`);
   };
 
+  // Use video.channelName if present, else fallback to channel?.channelName
+  const channelName = video.channelName || video.channel?.channelName || "Unknown Channel";
+
   return (
     <div className="video-card" onClick={handleClick}>
       {/* Thumbnail */}
@@ -23,8 +26,15 @@ const VideoCard = ({ video }) => {
 
       {/* Video Info */}
       <div className="video-info">
-        <h3 className="video-title">{video.title}</h3>
-        <p className="video-channel">{video.channel?.channelName || "Unknown Channel"}</p>
+        <h3 className="video-title" title={video.title} style={{
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          textAlign: 'left',
+        }}>{video.title}</h3>
+        <p className="video-channel">{channelName}</p>
         <p className="video-views">{video.views || 0} views</p>
       </div>
     </div>
