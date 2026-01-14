@@ -177,7 +177,7 @@ const handleSubscribe = async () => {
         <p className="video-player-views">{video.views || 0} views</p>
         <video className="video-player" src={video.videoUrl} controls />
         <div className="channel-info">
-          <h3>{video.channelName || "Unknown Channel"}</h3>
+          <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
           <button
             className="subscribe-btn"
             onClick={handleSubscribe}
@@ -314,7 +314,7 @@ const handleSubscribe = async () => {
               <div className="suggested-video-info">
                 <h4 className="suggested-video-title">{v.title}</h4>
                 <p className="suggested-video-channel">
-                  {v.channelName || "Unknown Channel"}
+                  {v.channel?.channelName || "Unknown Channel"}
                 </p>
                 <p className="suggested-video-description">{v.description}</p>
               </div>

@@ -52,7 +52,7 @@ const Channel = () => {
 
   return (
     <>
-      <div className="layout">
+      <div className="">
         <Sidebar />
 
         <div className="channel-page">

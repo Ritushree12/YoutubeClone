@@ -971,6 +971,12 @@ p {
   background-color: #cc0000;
   border-color: #cc0000;
 }
+.no-channel p {
+  color: #606060;
+  font-size: 16px;
+  text-align: center;
+  max-width: 400px;
+}
 
 .layout {
   padding: 20px;
@@ -1068,7 +1074,7 @@ p {
   flex: 1;
   padding: 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .channel-info {

@@ -13,6 +13,8 @@ export const createChannel = async (req, res) => {
       return res.status(400).json({ message: "User can only have one channel" });
     }
 
+  
+
     const { channelName, description, channelBanner } = req.body;
 
     const channel = await Channel.create({
@@ -29,6 +31,11 @@ export const createChannel = async (req, res) => {
 
     res.status(201).json(channel);
   } catch (err) {
+     if (err.code === 11000) {
+    return res.status(400).json({
+      message: "User already has a channel"
+    });
+  }
     console.error("Create channel error:", err);
     res.status(500).json({ message: "Server error" });
   }
