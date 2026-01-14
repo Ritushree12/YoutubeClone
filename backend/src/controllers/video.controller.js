@@ -28,26 +28,28 @@ export const createVideo = async (req, res) => {
   res.status(201).json(video);
 };
 
-
 export const uploadVideo = async (req, res) => {
   try {
     const { title, description, category, tags } = req.body;
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Video file is required" });
+    const videoFile = req.files?.video?.[0];
+    const thumbnailFile = req.files?.thumbnail?.[0];
+
+    if (!videoFile || !thumbnailFile) {
+      return res.status(400).json({
+        message: "Video and thumbnail required",
+      });
     }
 
-    const videoUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
-    const thumbnailUrl =
-      "https://via.placeholder.com/300x180?text=No+Thumbnail";
+    const videoUrl = `${process.env.BASE_URL}/uploads/${videoFile.filename}`;
+    const thumbnailUrl = `${process.env.BASE_URL}/uploads/${thumbnailFile.filename}`;
 
     // Find user's channel
     const userChannel = await Channel.findOne({ owner: req.user.id });
-
     if (!userChannel) {
-      return res
-        .status(400)
-        .json({ message: "User must create a channel first" });
+      return res.status(400).json({
+        message: "User must create a channel first",
+      });
     }
 
     const video = await Video.create({
@@ -62,8 +64,9 @@ export const uploadVideo = async (req, res) => {
     });
 
     // Push video into channel
-    userChannel.videos.push(video._id);
-    await userChannel.save();
+    await Channel.findByIdAndUpdate(userChannel._id, {
+      $push: { videos: video._id },
+    });
 
     res.status(201).json(video);
   } catch (error) {

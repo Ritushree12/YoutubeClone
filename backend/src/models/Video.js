@@ -4,7 +4,10 @@ const videoSchema = new mongoose.Schema(
   {
     title: String,
     description: String,
-    thumbnailUrl: String,
+    thumbnailUrl: {
+      type: String,
+      required: true,
+    },
     videoUrl: { type: String, required: true },
     category: String,
     channel: { type: mongoose.Schema.Types.ObjectId, ref: "Channel" },

@@ -30,7 +30,10 @@ router.get("/", getVideos);
 router.post(
   "/upload",
   protect,
-  upload.single("video"), // MUST match frontend
+  upload.fields([
+    { name: "video", maxCount: 1 },
+    { name: "thumbnail", maxCount: 1 },
+  ]),
   uploadVideo
 );
 
