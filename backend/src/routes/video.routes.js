@@ -1,17 +1,17 @@
 import express from "express";
+import multer from "multer";
 import { protect } from "../middleware/auth.middleware.js";
 import {
   getVideos,
-  createVideo,
   uploadVideo,
   getVideoById,
   likeVideo,
   dislikeVideo,
 } from "../controllers/video.controller.js";
-import multer from "multer";
 
 const router = express.Router();
 
+/* Multer config */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -23,9 +23,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+/* Routes */
 router.get("/", getVideos);
-router.post("/", protect, createVideo);
-router.post("/upload", protect, upload.any(), uploadVideo);
+
+/* 🔥 IMPORTANT FIX HERE */
+router.post(
+  "/upload",
+  protect,
+  upload.single("video"), // MUST match frontend
+  uploadVideo
+);
+
 router.get("/:id", getVideoById);
 router.post("/:id/like", protect, likeVideo);
 router.post("/:id/dislike", protect, dislikeVideo);
