@@ -842,6 +842,128 @@ p {
   .video-grid {
     grid-template-columns: 1fr;
   }
+
+  /* Header responsive */
+  .header {
+    padding: 0 16px;
+  }
+
+  .header-center {
+    flex: 1;
+    margin: 0 16px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Forms responsive */
+  .form-container {
+    max-width: 100%;
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .login-submit-container {
+    text-align: center;
+  }
+
+  /* Video player responsive */
+  .video-player-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .video-main {
+    width: 100%;
+  }
+
+  .video-player {
+    width: 100%;
+    height: auto;
+  }
+
+  .suggested-videos {
+    width: 100%;
+  }
+
+  .suggested-video-card {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .suggested-video-info {
+    flex: 1;
+  }
+
+  /* Channel page responsive */
+  .channel-page {
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .channel-header {
+    text-align: center;
+  }
+
+  .channel-info {
+    align-items: center;
+  }
+
+  .videos-section .video-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .video-card {
+    width: calc(100% - 24px);
+    margin: 12px;
+    max-width: 360px;
+  }
+
+  .no-channel {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .no-channel h2 {
+    font-size: 18px;
+    word-wrap: break-word;
+  }
+
+  .no-channel p {
+    max-width: 100%;
+    font-size: 14px;
+    word-wrap: break-word;
+  }
+
+  .no-channel button {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  /* Video player responsive */
+  .video-actions-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .action-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
 
 /* ===== Register Page ===== */
