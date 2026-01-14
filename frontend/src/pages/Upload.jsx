@@ -14,10 +14,18 @@ const Upload = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [thumbnail, setThumbnail] = useState(null);
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (!user) navigate("/login");
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +50,16 @@ const Upload = () => {
         },
       });
 
-      navigate("/");
+      setSuccess("Video uploaded successfully!");
+      // Reset form
+      setFormData({
+        title: "",
+        description: "",
+        category: "",
+        tags: "",
+      });
+      setFile(null);
+      setThumbnail(null);
     } catch (err) {
       console.error("Upload failed:", err.response?.data || err.message);
       alert(
@@ -56,6 +73,7 @@ const Upload = () => {
     <div className="container">
       <div className="form-container">
         <h2>Upload Video</h2>
+        {success && <p className="success">{success}</p>}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
