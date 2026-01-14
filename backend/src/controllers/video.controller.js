@@ -9,7 +9,11 @@ export const getVideos = async (req, res) => {
   let query = {};
 
   if (search) {
-    query.title = { $regex: search, $options: "i" };
+    query.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
+      { tags: { $regex: search, $options: "i" } }
+    ];
   }
 
   if (category) {
