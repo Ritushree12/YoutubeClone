@@ -28,47 +28,6 @@ export const createVideo = async (req, res) => {
   res.status(201).json(video);
 };
 
-// export const uploadVideo = async (req, res) => {
-//   try {
-//     const { title, description, category, tags } = req.body;
-//     const videoFile = req.file;
-//     const videoUrl = videoFile
-//       ? `${process.env.BASE_URL}/uploads/${videoFile.filename}`
-//       : "";
-//     const thumbnailUrl =
-//       "https://via.placeholder.com/300x180?text=No+Thumbnail"; // Placeholder thumbnail
-
-//     // Find the user's first channel
-//     const userChannel = await Channel.findOne({ owner: req.user.id });
-
-//     if (!userChannel) {
-//       return res
-//         .status(400)
-//         .json({ message: "User must create a channel first" });
-//     }
-
-//     const video = await Video.create({
-//       title,
-//       description,
-//       videoUrl,
-//       thumbnailUrl,
-//       category,
-//       tags: tags ? tags.split(",") : [],
-//       uploader: req.user.id,
-//       channel: userChannel._id,
-//     });
-
-//     // Add video to channel's videos array
-//     await Channel.findByIdAndUpdate(userChannel._id, {
-//       $push: { videos: video._id },
-//     });
-
-//     res.status(201).json(video);
-//   } catch (error) {
-//     console.error("Upload error:", error);
-//     res.status(500).json({ message: "Server error during upload" });
-//   }
-// };
 
 export const uploadVideo = async (req, res) => {
   try {
