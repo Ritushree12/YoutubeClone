@@ -15,6 +15,11 @@ const Upload = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -25,15 +30,11 @@ const Upload = () => {
     data.append("video", file);
 
     try {
-      await api.post("/videos/upload", data, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await api.post("/videos/upload", data);
       navigate("/");
     } catch (err) {
-      console.error(err);
+      console.error("Upload failed:", err);
+      alert("Upload failed. Please make sure you have created a channel first.");
     }
   };
 

@@ -981,3 +981,13 @@ textarea {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.channel-header{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #2f2f2f;
+  flex-direction: column;
+  justify-content: center;
+  
+}
