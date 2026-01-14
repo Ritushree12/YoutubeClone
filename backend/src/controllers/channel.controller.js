@@ -1,6 +1,7 @@
 // import Channel from "../models/Channel.js";
 // import Video from "../models/Video.js";
-
+// import Channel from "../models/Channel.js";
+// import User from "../models/User.js";
 // export const createChannel = async (req, res) => {
 //   const { channelName, description, channelBanner } = req.body;
 //   const channel = await Channel.create({

@@ -78,13 +78,11 @@ const CreateChannelModal = ({ isOpen, onClose, onCreated }) => {
     <div className="modal-backdrop">
       <div className="modal">
         <h2>Create Channel</h2>
-
         <input
           placeholder="Channel name"
           value={channelName}
           onChange={(e) => setChannelName(e.target.value)}
         />
-
         <textarea
           placeholder="Description (optional)"
           value={description}
