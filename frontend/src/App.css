@@ -1059,3 +1059,85 @@ p {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+/* ===== Channel Page ===== */
+.channel-page {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.channel-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 16px;
+}
+
+.channel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.channel-name {
+  font-size: 24px;
+  font-weight: 400;
+  color: #030303;
+  margin: 0;
+}
+
+.channel-stats {
+  font-size: 14px;
+  color: #606060;
+  margin: 0;
+}
+
+/* Channel Tabs */
+.channel-tabs {
+  display: flex;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 24px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #606060;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background-color: #f9f9f9;
+  color: #030303;
+}
+
+.tab-button.active {
+  color: #030303;
+  border-bottom-color: #030303;
+}
+
+/* Tab Content */
+.tab-content {
+  min-height: 400px;
+}
+
+.videos-section {
+  width: 100%;
+}
+
+.no-videos {
+  text-align: center;
+  padding: 40px;
+  color: #606060;
+}
+
+.no-videos p {
+  font-size: 16px;
+  margin: 0;
+}

@@ -1,11 +1,18 @@
 import Channel from "../models/Channel.js";
 import User from "../models/User.js";
+import mongoose from "mongoose";
 
 /**
  * CREATE CHANNEL
  */
 export const createChannel = async (req, res) => {
   try {
+    // Check if user already has a channel
+    const existingChannel = await Channel.findOne({ owner: req.user.id });
+    if (existingChannel) {
+      return res.status(400).json({ message: "User can only have one channel" });
+    }
+
     const { channelName, description, channelBanner } = req.body;
 
     const channel = await Channel.create({
@@ -22,6 +29,7 @@ export const createChannel = async (req, res) => {
 
     res.status(201).json(channel);
   } catch (err) {
+    console.error("Create channel error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -30,16 +38,28 @@ export const createChannel = async (req, res) => {
  * GET CHANNEL BY ID
  */
 export const getChannelById = async (req, res) => {
-  const channel = await Channel.findById(req.params.id)
-    .populate("owner", "username")
-    .populate("subscribers", "username")
-    .populate("videos");
+  try {
+    const { id } = req.params;
 
-  if (!channel) {
-    return res.status(404).json({ message: "Channel not found" });
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid channel ID format" });
+    }
+
+    const channel = await Channel.findById(id)
+      .populate("owner", "username")
+      .populate("subscribers", "username")
+      .populate("videos");
+
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+
+    res.json(channel);
+  } catch (error) {
+    console.error("Get channel by ID error:", error);
+    res.status(500).json({ message: "Server error" });
   }
-
-  res.json(channel);
 };
 
 /**
