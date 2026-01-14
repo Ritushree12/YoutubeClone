@@ -7,6 +7,8 @@ import {
   getVideoById,
   likeVideo,
   dislikeVideo,
+  updateVideo,
+  deleteVideo,
 } from "../controllers/video.controller.js";
 
 const router = express.Router();
@@ -38,6 +40,8 @@ router.post(
 );
 
 router.get("/:id", getVideoById);
+router.put("/:id", protect, updateVideo);
+router.delete("/:id", protect, deleteVideo);
 router.post("/:id/like", protect, likeVideo);
 router.post("/:id/dislike", protect, dislikeVideo);
 

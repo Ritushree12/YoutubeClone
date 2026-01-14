@@ -122,9 +122,54 @@ export const dislikeVideo = async (req, res) => {
     video.dislikes.pull(userId);
   } else {
     video.dislikes.push(userId);
-    if (isLiked) video.likes.pull(userId);
-  }
-
   await video.save();
   res.json({ likes: video.likes.length, dislikes: video.dislikes.length });
+};}
+
+/**
+ * UPDATE VIDEO
+ */
+export const updateVideo = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    // Check if user owns the video
+    if (video.uploader.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    const { title, description, category, tags } = req.body;
+    video.title = title || video.title;
+    video.description = description || video.description;
+    video.category = category || video.category;
+    video.tags = tags || video.tags;
+
+    await video.save();
+    res.json(video);
+  } catch (error) {
+    console.error("Update video error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+/**
+ * DELETE VIDEO
+ */
+export const deleteVideo = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    // Check if user owns the video
+    if (video.uploader.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    await Video.findByIdAndDelete(req.params.id);
+    res.json({ message: "Video deleted" });
+  } catch (error) {
+    console.error("Delete video error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import Sidebar from "../components/Sidebar";
 import VideoCard from "../components/VideoCard";
@@ -7,10 +7,18 @@ import CreateChannelModal from "../components/CreateChannelModal";
 
 const Channel = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [activeChannel, setActiveChannel] = useState(null);
   const [channelVideos, setChannelVideos] = useState([]);
   const [activeTab, setActiveTab] = useState("videos");
   const [showModal, setShowModal] = useState(false);
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    tags: "",
+  });
 
   useEffect(() => {
     const loadChannel = async () => {
@@ -49,6 +57,46 @@ const Channel = () => {
 
     loadChannel();
   }, [id]);
+
+  const handleEditVideo = (video) => {
+    setEditingVideo(video);
+    setEditForm({
+      title: video.title,
+      description: video.description,
+      category: video.category,
+      tags: video.tags.join(", "),
+    });
+  };
+
+  const handleDeleteVideo = async (videoId) => {
+    if (window.confirm("Are you sure you want to delete this video?")) {
+      try {
+        await api.delete(`/videos/${videoId}`);
+        setChannelVideos(channelVideos.filter(v => v._id !== videoId));
+      } catch (error) {
+        console.error("Delete failed:", error);
+        alert("Failed to delete video");
+      }
+    }
+  };
+
+  const handleUpdateVideo = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedVideo = {
+        ...editForm,
+        tags: editForm.tags.split(",").map(tag => tag.trim()),
+      };
+      await api.put(`/videos/${editingVideo._id}`, updatedVideo);
+      setChannelVideos(channelVideos.map(v => 
+        v._id === editingVideo._id ? { ...v, ...updatedVideo } : v
+      ));
+      setEditingVideo(null);
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert("Failed to update video");
+    }
+  };
 
   return (
     <>
@@ -93,7 +141,22 @@ const Channel = () => {
                     {channelVideos.length > 0 ? (
                       <div className="video-grid">
                         {channelVideos.map((video) => (
-                          <VideoCard key={video._id} video={video} />
+                          <div key={video._id} className="channel-video-card">
+                            <img
+                              src={video.thumbnailUrl || "/placeholder.png"}
+                              alt={video.title}
+                              className="channel-video-thumbnail"
+                              onClick={() => navigate(`/video/${video._id}`)}
+                            />
+                            <div className="channel-video-info">
+                              <h4>{video.title}</h4>
+                              <p>{video.views || 0} views • {new Date(video.createdAt).toLocaleDateString()}</p>
+                              <div className="video-actions">
+                                <button onClick={() => handleEditVideo(video)}>Edit</button>
+                                <button onClick={() => handleDeleteVideo(video._id)}>Delete</button>
+                              </div>
+                            </div>
+                          </div>
                         ))}
                       </div>
                     ) : (
@@ -108,6 +171,45 @@ const Channel = () => {
           )}
         </div>
       </div>
+
+      {/* Edit Video Modal */}
+      {editingVideo && (
+        <div className="modal-overlay" onClick={() => setEditingVideo(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Edit Video</h3>
+            <form onSubmit={handleUpdateVideo}>
+              <input
+                type="text"
+                placeholder="Title"
+                value={editForm.title}
+                onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                required
+              />
+              <textarea
+                placeholder="Description"
+                value={editForm.description}
+                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Category"
+                value={editForm.category}
+                onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Tags (comma separated)"
+                value={editForm.tags}
+                onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
+              />
+              <div className="modal-actions">
+                <button type="submit">Update</button>
+                <button type="button" onClick={() => setEditingVideo(null)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       <CreateChannelModal
         isOpen={showModal}
