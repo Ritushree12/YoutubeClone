@@ -13,6 +13,7 @@ const Upload = () => {
   const [file, setFile] = useState(null);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [thumbnail, setThumbnail] = useState(null);
 
   useEffect(() => {
     if (!user) navigate("/login");
@@ -21,10 +22,10 @@ const Upload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
-      alert("Please select a video file");
-      return;
-    }
+    if (!file || !thumbnail) {
+    alert("Please select both video and thumbnail");
+    return;
+  }
 
     const data = new FormData();
     data.append("title", formData.title);
@@ -32,6 +33,7 @@ const Upload = () => {
     data.append("category", formData.category);
     data.append("tags", formData.tags);
     data.append("video", file);
+      data.append("thumbnail", thumbnail); 
 
     try {
       await api.post("/videos/upload", data, {
@@ -86,15 +88,20 @@ const Upload = () => {
             type="text"
             placeholder="Tags (comma separated)"
             value={formData.tags}
-            onChange={(e) =>
-              setFormData({ ...formData, tags: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
           />
 
           <input
             type="file"
             accept="video/*"
             onChange={(e) => setFile(e.target.files[0])}
+            required
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setThumbnail(e.target.files[0])}
             required
           />
 
