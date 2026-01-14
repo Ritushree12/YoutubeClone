@@ -28,6 +28,11 @@ const Header = ({ toggleSidebar }) => {
     }
   }, [user]);
 
+  // Close menu when user changes (login/logout)
+  useEffect(() => {
+    setShowMenu(false);
+  }, [user]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -119,7 +124,10 @@ const Header = ({ toggleSidebar }) => {
 
                 <button
                   className="menu-btn logout-btn"
-                  onClick={logout}
+                  onClick={() => {
+                    logout();
+                    navigate("/");
+                  }}
                 >
                   Logout
                 </button>
