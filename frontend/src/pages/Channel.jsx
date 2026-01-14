@@ -69,7 +69,7 @@ const Channel = () => {
               {/* Channel Header */}
               <div className="channel-header">
                 <div className="channel-info">
-                  <h1 className="channel-name">{activeChannel.channelName}</h1>
+                  <h1 className="channel-name">{activeChannel.channelName || activeChannel.owner?.username || "Unknown Channel"}</h1>
                   <p className="channel-stats">
                     {activeChannel.subscribers?.length || 0} subscribers
                   </p>
