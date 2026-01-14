@@ -13,12 +13,11 @@ export const addComment = async (req, res) => {
 
     // Populate the user field
     const populatedComment = await Comment.findById(comment._id).populate({
-      path: 'user',
-      select: 'username email'  // only get username and email
+      path: "user",
+      select: "username email", // only get username and email
     });
 
     res.status(201).json(populatedComment);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
@@ -27,38 +26,37 @@ export const addComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
   try {
-    const { id } = req.params; // comment ID
-    const comment = await Comment.findById(id).populate('user');
-    if (!comment) return res.status(404).json({ message: "Comment not found" });
+    const comment = await Comment.findById(req.params.id);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
 
-    // Only allow owner to delete
-    if (comment.user._id.toString() !== req.user.id)
-      return res.status(403).json({ message: "Not allowed" });
+    // ✅ ONLY comment owner can delete
+    if (comment.user.toString() !== req.user.id) {
+      return res.status(403).json({ message: "You can delete only your comment" });
+    }
 
-    // Delete using deleteOne
     await comment.deleteOne();
-
-    res.json({ message: "Comment deleted successfully" });
+    res.json({ message: "Comment deleted" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 export const updateComment = async (req, res) => {
   try {
     const { text } = req.body;
-    const comment = await Comment.findById(req.params.id).populate('user');
-
+    const comment = await Comment.findById(req.params.id);
     if (!comment) return res.status(404).json({ message: "Comment not found" });
-    if (comment.user._id.toString() !== req.user.id)
+    if (comment.user.toString() !== req.user.id)
       return res.status(403).json({ message: "Not authorized" });
 
     comment.text = text;
     await comment.save();
 
     const populatedComment = await Comment.findById(comment._id).populate({
-      path: 'user',
-      select: 'username email'
+      path: "user",
+      select: "username email",
     });
 
     res.json(populatedComment);
@@ -68,9 +66,8 @@ export const updateComment = async (req, res) => {
   }
 };
 
-
 export const likeComment = async (req, res) => {
-  const comment = await Comment.findById(req.params.id).populate('user');
+  const comment = await Comment.findById(req.params.id).populate("user");
   if (!comment) return res.status(404).json({ message: "Comment not found" });
 
   const userId = req.user.id;
