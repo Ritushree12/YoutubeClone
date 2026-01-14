@@ -7,9 +7,16 @@ import dislikeIcon from "../assets/dislike.png";
 import share from "../assets/share.png";
 import save from "../assets/bookmark.png";
 
+/**
+ * VideoPlayer Component
+ * Displays a video with player, comments, and interaction features
+ * Handles video playback, likes/dislikes, comments, and subscriptions
+ */
 const VideoPlayer = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+
+  // Video and UI state
   const [video, setVideo] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -35,6 +42,7 @@ const VideoPlayer = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  // Fetch video data and comments on component mount
   useEffect(() => {
     api.get(`/videos/${id}`).then((res) => {
       setVideo(res.data.video);
@@ -97,13 +105,9 @@ const handleSubscribe = async () => {
   if (!video.channel) return;
 
   try {
-    const channelId = video.channel; // already a string ID
+    const channelId = video.channel._id; // Get the channel ID from the populated object
 
-    const res = await api.post(
-      `/channels/${channelId}/subscribe`,
-      {}, // empty body
-      { headers: { Authorization: `Bearer ${user.token}` } }
-    );
+    const res = await api.post(`/channels/${channelId}/subscribe`);
 
     setSubscribers(res.data.subscribers);
     setIsSubscribed(res.data.isSubscribed);

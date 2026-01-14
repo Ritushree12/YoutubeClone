@@ -6,19 +6,31 @@ import hamburgerIcon from "../assets/hamburger.png";
 import searchIcon from "../assets/search.png";
 import userIcon from "../assets/user.png";
 import logoImage from "../assets/logo.png";
+
+/**
+ * Header Component
+ * Main navigation bar with logo, search, and user menu
+ * @param {Function} toggleSidebar - Function to toggle the sidebar visibility
+ */
 const Header = ({ toggleSidebar }) => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // State for search functionality
   const [searchQuery, setSearchQuery] = useState("");
+
+  // State for user dropdown menu
   const [showMenu, setShowMenu] = useState(false);
+
+  // State for create channel modal
   const [showModal, setShowModal] = useState(false);
   const [channel, setChannel] = useState(null);
 
+  // Form state for creating channel
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
 
-  // Fetch user's channel
+  // Fetch user's channel on component mount if user is logged in
   useEffect(() => {
     if (user) {
       axios
@@ -28,11 +40,15 @@ const Header = ({ toggleSidebar }) => {
     }
   }, [user]);
 
-  // Close menu when user changes (login/logout)
+  // Close dropdown menu when user state changes (login/logout)
   useEffect(() => {
     setShowMenu(false);
   }, [user]);
 
+  /**
+   * Handle search form submission
+   * Navigates to home page with search query parameter
+   */
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {

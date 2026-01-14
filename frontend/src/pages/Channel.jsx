@@ -5,13 +5,22 @@ import Sidebar from "../components/Sidebar";
 import VideoCard from "../components/VideoCard";
 import CreateChannelModal from "../components/CreateChannelModal";
 
+/**
+ * Channel Component
+ * Displays a user's channel with their videos and management options
+ * Allows channel owners to edit and delete their videos
+ */
 const Channel = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Channel and video state
   const [activeChannel, setActiveChannel] = useState(null);
   const [channelVideos, setChannelVideos] = useState([]);
   const [activeTab, setActiveTab] = useState("videos");
   const [showModal, setShowModal] = useState(false);
+
+  // Video editing state
   const [editingVideo, setEditingVideo] = useState(null);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -58,6 +67,10 @@ const Channel = () => {
     loadChannel();
   }, [id]);
 
+  /**
+   * Handle editing a video - opens edit modal with current video data
+   * @param {Object} video - Video object to edit
+   */
   const handleEditVideo = (video) => {
     setEditingVideo(video);
     setEditForm({
@@ -68,6 +81,10 @@ const Channel = () => {
     });
   };
 
+  /**
+   * Handle deleting a video with confirmation
+   * @param {string} videoId - ID of video to delete
+   */
   const handleDeleteVideo = async (videoId) => {
     if (window.confirm("Are you sure you want to delete this video?")) {
       try {
@@ -80,6 +97,10 @@ const Channel = () => {
     }
   };
 
+  /**
+   * Handle updating video details
+   * @param {Event} e - Form submit event
+   */
   const handleUpdateVideo = async (e) => {
     e.preventDefault();
     try {
