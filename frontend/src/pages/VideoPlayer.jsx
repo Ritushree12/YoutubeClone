@@ -4,6 +4,8 @@ import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 import likeIcon from "../assets/like.png";
 import dislikeIcon from "../assets/dislike.png";
+import share from "../assets/share.png";
+import save from "../assets/save.png";
 
 const VideoPlayer = () => {
   const { id } = useParams();
@@ -42,10 +44,10 @@ const VideoPlayer = () => {
       setSubscribers(res.data.video.channel?.subscribers?.length || 0);
       if (user) {
         setIsLiked(
-          res.data.video.likes.some((id) => id.toString() === user.id)
+          res.data.video.likes.some((id) => id.toString() === user._id)
         );
         setIsDisliked(
-          res.data.video.dislikes.some((id) => id.toString() === user.id)
+          res.data.video.dislikes.some((id) => id.toString() === user._id)
         );
         if (res.data.video.channel) {
           setIsSubscribed(
@@ -105,18 +107,44 @@ const VideoPlayer = () => {
   };
 const handleAddComment = async () => {
   if (!newComment) return;
-  const res = await api.post("/comments", { videoId: id, text: newComment }, {
-    headers: { Authorization: `Bearer ${user.token}` },
-  });
-  setComments([...comments, res.data]);
+
+  const res = await api.post(
+    "/comments",
+    { videoId: id, text: newComment },
+    { headers: { Authorization: `Bearer ${user.token}` } }
+  );
+
+  // Ensure the comment has proper user data for immediate display
+  const newCommentWithUser = {
+    ...res.data,
+    user: {
+      _id: user._id,
+      username: user.username,
+      email: user.email
+    }
+  };
+
+  setComments([...comments, newCommentWithUser]);
   setNewComment("");
 };
+
 
 const handleUpdateComment = async (commentId) => {
   const res = await api.put(`/comments/${commentId}`, { text: editingText }, {
     headers: { Authorization: `Bearer ${user.token}` },
   });
-  setComments(comments.map(c => c._id === commentId ? { ...c, text: res.data.text } : c));
+
+  // Ensure the updated comment maintains user data
+  const updatedComment = {
+    ...res.data,
+    user: comments.find(c => c._id === commentId)?.user || {
+      _id: user._id,
+      username: user.username,
+      email: user.email
+    }
+  };
+
+  setComments(comments.map(c => c._id === commentId ? updatedComment : c));
   setEditingId(null);
   setEditingText("");
 };
@@ -134,23 +162,26 @@ const handleDeleteComment = async (commentId) => {
         <h2>{video.title}</h2>
       <video className="video-player" src={video.videoUrl} controls />
 
-        <div className="video-info">
-          <div className="video-actions">
-            <button onClick={handleLike} disabled={!user}>
-              <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
-            </button>
-            <button onClick={handleDislike} disabled={!user}>
-              <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike ({dislikes})
-            </button>
-          </div>
+<div className="video-info">
+  <div className="video-actions">
+    <button className="video-icons" onClick={handleLike} disabled={!user}>
+      <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
+    </button>
+    <button className="video-icons" onClick={handleDislike} disabled={!user}>
+      <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike ({dislikes})
+    </button>
+  </div>
 
-          <div className="channel-info">
-            <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
-            <button onClick={handleSubscribe} disabled={!user}>
-              {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
-            </button>
-          </div>
-        </div>
+  <div className="channel-info">
+    <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
+    <button className="video-icons"><img src={share} alt="Share" className="icon" /></button>
+    <button className="video-icons"><img src={save} alt="Save" className="icon" /></button>
+    <button onClick={handleSubscribe} disabled={!user}>
+      {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
+    </button>
+  </div>
+</div>
+
 
      <div className="comments-section">
   <h3>Comments</h3>
