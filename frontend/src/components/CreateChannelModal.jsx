@@ -54,7 +54,7 @@
 
 // export default CreateChannelModal;
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api.js";
 
 const CreateChannelModal = ({ isOpen, onClose, onCreated }) => {
   const [channelName, setChannelName] = useState("");
@@ -65,7 +65,7 @@ const CreateChannelModal = ({ isOpen, onClose, onCreated }) => {
   const handleCreate = async () => {
     if (!channelName.trim()) return alert("Channel name required");
 
-    const res = await axios.post("/api/channels", {
+    const res = await api.post("/channels", {
       channelName,
       description,
     });
