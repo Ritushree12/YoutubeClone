@@ -179,7 +179,7 @@ const handleDeleteComment = async (commentId) => {
   </div>
 
   <div className="channel-info">
-    <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
+     <h3>{video.channelName || "Unknown Channel"}</h3>
     <button className="subscribe-btn" onClick={handleSubscribe} disabled={!user}>
       {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
     </button>
