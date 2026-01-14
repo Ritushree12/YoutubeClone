@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import likeIcon from "../assets/like.png";
 import dislikeIcon from "../assets/dislike.png";
 import share from "../assets/share.png";
-import save from "../assets/save.png";
+import save from "../assets/bookmark.png";
 
 const VideoPlayer = () => {
   const { id } = useParams();
@@ -163,20 +163,24 @@ const handleDeleteComment = async (commentId) => {
       <video className="video-player" src={video.videoUrl} controls />
 
 <div className="video-info">
-  <div className="video-actions">
-    <button className="video-icons" onClick={handleLike} disabled={!user}>
+  <div className="video-actions-row">
+    <button className="action-btn like-btn" onClick={handleLike} disabled={!user}>
       <img src={likeIcon} alt="Like" className="icon" /> Like ({likes})
     </button>
-    <button className="video-icons" onClick={handleDislike} disabled={!user}>
+    <button className="action-btn dislike-btn" onClick={handleDislike} disabled={!user}>
       <img src={dislikeIcon} alt="Dislike" className="icon" /> Dislike ({dislikes})
+    </button>
+    <button className="action-btn share-btn">
+      <img src={share} alt="Share" className="icon" /> Share
+    </button>
+    <button className="action-btn save-btn">
+      <img src={save} alt="Save" className="icon" /> Save
     </button>
   </div>
 
   <div className="channel-info">
     <h3>{video.channel?.channelName || "Unknown Channel"}</h3>
-    <button className="video-icons"><img src={share} alt="Share" className="icon" /></button>
-    <button className="video-icons"><img src={save} alt="Save" className="icon" /></button>
-    <button onClick={handleSubscribe} disabled={!user}>
+    <button className="subscribe-btn" onClick={handleSubscribe} disabled={!user}>
       {isSubscribed ? "Unsubscribe" : "Subscribe"} ({subscribers})
     </button>
   </div>

@@ -32,7 +32,7 @@ export const deleteComment = async (req, res) => {
     if (!comment) return res.status(404).json({ message: "Comment not found" });
 
     // Only allow owner to delete
-    if (comment.user.toString() !== req.user.id)
+    if (comment.user._id.toString() !== req.user.id)
       return res.status(403).json({ message: "Not allowed" });
 
     // Delete using deleteOne
@@ -47,10 +47,10 @@ export const deleteComment = async (req, res) => {
 export const updateComment = async (req, res) => {
   try {
     const { text } = req.body;
-    const comment = await Comment.findById(req.params.id);
+    const comment = await Comment.findById(req.params.id).populate('user');
 
     if (!comment) return res.status(404).json({ message: "Comment not found" });
-    if (comment.user.toString() !== req.user.id)
+    if (comment.user._id.toString() !== req.user.id)
       return res.status(403).json({ message: "Not authorized" });
 
     comment.text = text;
