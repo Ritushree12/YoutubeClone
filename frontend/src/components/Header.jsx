@@ -182,8 +182,7 @@ const Header = ({ toggleSidebar }) => {
                 cursor: "pointer",
               }}
               onClick={async () => {
-                const res = await axios.post("/api/channel/create", {
-                  userId: user._id,
+                const res = await axios.post("/api/channels", {
                   channelName: name,
                   description: desc,
                 });
