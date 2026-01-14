@@ -93,18 +93,27 @@ const VideoPlayer = () => {
     if (isLiked) setIsLiked(false);
   };
 
-  const handleSubscribe = async () => {
-    if (!video.channel) return;
+const handleSubscribe = async () => {
+  if (!video.channel) return;
+
+  try {
+    const channelId = video.channel; // already a string ID
+
     const res = await api.post(
-      `/channels/${video.channel._id}/subscribe`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${user.token}` },
-      }
+      `/channels/${channelId}/subscribe`,
+      {}, // empty body
+      { headers: { Authorization: `Bearer ${user.token}` } }
     );
+
     setSubscribers(res.data.subscribers);
-    setIsSubscribed(!isSubscribed);
-  };
+    setIsSubscribed(res.data.isSubscribed);
+  } catch (err) {
+    console.error("Subscribe error:", err.response || err);
+    alert(err.response?.data?.message || "Failed to subscribe");
+  }
+};
+
+
   const handleAddComment = async () => {
     if (!newComment) return;
 
